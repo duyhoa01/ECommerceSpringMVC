@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import com.example.ecommerce.model.Product;
+import com.example.ecommerce.model.ProductDetail;
 
 public interface ProductDao {
 
@@ -25,7 +26,7 @@ public interface ProductDao {
     
     public Long countwithKey(String key);
     
-    public List<Product> getListProduct(String key, List<Integer> manufactures, List<Integer> price, int minPin, int maxPin,Pageable pageable);
+    public List<ProductDetail> getListProduct(String key, List<Integer> manufactures, List<Integer> price, int minPin, int maxPin,double minPrice, double maxPrice,Pageable pageable);
     
-    public Long countwithKeyManuPriPin(String key, List<Integer> manufactures, List<Integer> price,int minPin, int maxPin );
+    public Long countwithKeyManuPriPin(String key, List<Integer> manufactures, List<Integer> price,int minPin, int maxPin,double minPrice, double maxPrice );
 }

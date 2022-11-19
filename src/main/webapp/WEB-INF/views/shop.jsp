@@ -58,27 +58,27 @@
                             <div class="list_manfac">
                                 <ul>
                                     <li>
-                                        <input type="checkbox" name="price" value="0">
+                                        <input type="checkbox" name="price" value="0" <c:if test="${price.contains(Integer(0))}">checked="checked"</c:if>>
                                         <label for="man0">Tất cả</label><br>
                                     </li>
                                     <li>
-                                        <input type="checkbox" name="price" value="1">
+                                        <input type="checkbox" name="price" value="1" <c:if test="${price.contains(Integer(1))}">checked="checked"</c:if>>
                                         <label for="man1">Dưới 2 triệu</label><br>
                                     </li>
                                     <li>
-                                        <input type="checkbox" name="price" value="2">
+                                        <input type="checkbox" name="price" value="2" <c:if test="${price.contains(Integer(2))}">checked="checked"</c:if>>
                                         <label for="man2">2 - 4 triệu</label><br>
                                     </li>
                                     <li>
-                                        <input type="checkbox" name="price" value="3">
+                                        <input type="checkbox" name="price" value="3" <c:if test="${price.contains(Integer(3))}">checked="checked"</c:if>>
                                         <label for="man3">4 - 7 triệu</label><br>
                                     </li>
                                     <li>
-                                        <input type="checkbox" name="price" value="4">
+                                        <input type="checkbox" name="price" value="4" <c:if test="${price.contains(Integer(4))}">checked="checked"</c:if>>
                                         <label for="man4">7 - 14 triệu</label><br>
                                     </li>
                                     <li>
-                                        <input type="checkbox" name="price" value="5">
+                                        <input type="checkbox" name="price" value="5" <c:if test="${price.contains(Integer(5))}">checked="checked"</c:if>>
                                         <label for="man5">trên 14 triệu</label><br>
                                     </li>
                                 </ul>
@@ -126,23 +126,25 @@
                 <div class="main__header">
                     <div class="header__top">
                         <h1>Điện thoại</h1>
-                        <p>(12 sản phẩm)</p>
+                        <p>(${count} sản phẩm)</p>
                     </div>
-                    <div class="header__bottom">
+                    <%-- <div class="header__bottom">
                         <h3>Lọc theo</h3>
                         <ul>
-                            <li>sam sung</li>
-                            <li>2 -4 triệu</li>
+                        	<c:forEach items="${manufacturer}" var="manu" varStatus="status">
+                        		<li>${manu}</li>
+                        	</c:forEach>
+                            
                         </ul>
-                    </div>
+                    </div> --%>
                 </div>
                 <div class="pro-container">
                     <c:forEach items="${products}" var="product" varStatus="status">
 		                <div class="pro">
-		                    <img src="<c:url value='${product.images.get(1)}' />" alt="">
+		                    <img src="<c:url value='${product.product.images.get(1)}' />" alt="">
 		                    <div class="des">
-		                        <span>${product.manufacrurer.name}</span>
-		                        <h5><a href="<c:url value='/admin/product/${product.id}' />">${product.name}</a></h5>
+		                        <span>${product.product.manufacrurer.name} </span>
+		                        <h5><a href="<c:url value='/product/${product.id}' />">${product.product.name} ${product.ram}</a></h5>
 		                        <div class="star">
 		                            <i class="fas fa-star"></i>
 		                            <i class="fas fa-star"></i>
@@ -150,14 +152,14 @@
 		                            <i class="fas fa-star"></i>
 		                            <i class="fas fa-star"></i>
 		                        </div>
-		                        <h4>${product.productDetails.get(0).price} đ</h4>
+		                        <h4>${product.price} đ</h4>
 		                        <a href="#"><i class="fas fa-shopping-cart cart"></i></a>
 		                    </div>
 		                </div>
 	               </c:forEach> 
                 </div>
                 <div class="paging">
-	                <tag:paginate offset="${offset}" count="${count}" key="${key}" steps="${3}" manufacturer="${manufacturer}" pin="${pin}" uri="" next="&raquo;" previous="&laquo;" />
+	                <tag:paginate offset="${offset}" count="${count}" key="${key}" steps="${6}" manufacturer="${manufacturer}" pin="${pin}" price="${price}" uri="" next="&raquo;" previous="&laquo;" />
 	            </div>
             </div>
         </div>

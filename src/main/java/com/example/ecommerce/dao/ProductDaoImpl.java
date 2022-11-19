@@ -13,6 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import com.example.ecommerce.model.Product;
+import com.example.ecommerce.model.ProductDetail;
 
 @Repository
 public class ProductDaoImpl implements ProductDao {
@@ -89,12 +90,14 @@ public class ProductDaoImpl implements ProductDao {
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<Product> getListProduct(String key, List<Integer> manufactures, List<Integer> price, int minPin,int maxPin,Pageable pageable) {
+	public List<ProductDetail> getListProduct(String key, List<Integer> manufactures, List<Integer> price, int minPin,int maxPin,double minPrice, double maxPrice, Pageable pageable) {
 		return  currencySession()
-                .createQuery("from Product p where p.name LIKE CONCAT('%',?1,'%') AND p.manufacrurer.id IN (:manufactures) AND p.specifications.dungLuongPin between :low and :high")
+                .createQuery("select pd from Product p JOIN p.productDetails  pd  where p.name LIKE CONCAT('%',?1,'%') AND p.manufacrurer.id IN (:manufactures) AND p.specifications.dungLuongPin between :low and :high AND pd.price >= :minPrice AND pd.price <= :maxPrice")
                 .setParameter(1, key).setParameter("manufactures", manufactures)
                 .setParameter("low", minPin)
                 .setParameter("high", maxPin)
+                .setParameter("minPrice", minPrice)
+                .setParameter("maxPrice", maxPrice)
                 .setFirstResult((int) pageable.getOffset())
 				.setMaxResults(pageable.getPageSize())
 				.list();
@@ -104,12 +107,14 @@ public class ProductDaoImpl implements ProductDao {
 
 	@Override
 	public Long countwithKeyManuPriPin(String key, List<Integer> manufactures, List<Integer> price,
-			int minPin, int maxPin) {
+			int minPin, int maxPin,double minPrice, double maxPrice) {
 		return  (Long) currencySession()
-                .createQuery("select count(*) from Product p where p.name LIKE CONCAT('%',?1,'%') AND p.manufacrurer.id IN (:manufactures) AND p.specifications.dungLuongPin between :low and :high")
+                .createQuery("select count(*) from Product p JOIN p.productDetails pd where p.name LIKE CONCAT('%',?1,'%') AND p.manufacrurer.id IN (:manufactures) AND p.specifications.dungLuongPin between :low and :high AND pd.price >= :minPrice AND pd.price <= :maxPrice")
                 .setParameter(1, key).setParameter("manufactures", manufactures)
                 .setParameter("low", minPin)
-                .setParameter("high", maxPin).uniqueResult();
+                .setParameter("high", maxPin)
+                .setParameter("minPrice", minPrice)
+                .setParameter("maxPrice", maxPrice).uniqueResult();
                 
 	}
 

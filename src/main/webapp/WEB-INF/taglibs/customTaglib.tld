@@ -36,6 +36,11 @@
             <type>java.util.List</type>
         </attribute>
         <attribute>
+            <name>price</name>
+            <rtexprvalue>true</rtexprvalue>
+            <type>java.util.List</type>
+        </attribute>
+        <attribute>
             <name>uri</name>
             <required>true</required>
             <rtexprvalue>true</rtexprvalue>

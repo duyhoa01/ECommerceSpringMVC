@@ -20,6 +20,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -35,6 +36,7 @@ import com.example.ecommerce.model.Admin;
 import com.example.ecommerce.model.Customer;
 import com.example.ecommerce.model.Manufacturer;
 import com.example.ecommerce.model.Product;
+import com.example.ecommerce.model.ProductDetail;
 import com.example.ecommerce.model.Staff;
 import com.example.ecommerce.model.User;
 import com.example.ecommerce.service.AdminService;
@@ -212,7 +214,7 @@ public class HomeController {
 								@RequestParam(value = "pin", required = false) List<Integer> pin,
 								@PageableDefault(
 										page = 0,
-										size = 3
+										size = 6
 										) Pageable pageable) {
 		List<Integer> manufacturerCop;
 		if (manufacturer==null) {
@@ -224,14 +226,15 @@ public class HomeController {
 		} else {
 			manufacturerCop=manufacturer;
 		}
-		List<Product> products= homeService.getListProduct(key, manufacturerCop, price, pin,pageable);
-		for (Product product : products) {
-			System.out.println(product.getName());
-		}
 		if(pin==null) {
 			pin=new ArrayList<Integer>();
 			pin.add(0);
 		}
+		if(price==null) {
+			price=new ArrayList<Integer>();
+			price.add(0);
+		}
+		List<ProductDetail> products= homeService.getListProduct(key, manufacturerCop, price, pin,pageable);	
 		Long count=homeService.countwithKeyManuPriPin(key, manufacturerCop, price, pin);
 		model.setViewName("shop");
 		List<Manufacturer> manufacturers=homeService.getAllManufacturers();
@@ -242,6 +245,12 @@ public class HomeController {
 		model.addObject("offset",pageable.getOffset());
 		model.addObject("count",count);
 		model.addObject("pin",pin);
+		model.addObject("price",price);
+		return model;
+	}
+	@GetMapping("/product/{id}")
+	public ModelAndView detailProduct(@PathVariable Integer id) {
+		ModelAndView model=new ModelAndView("product_detail");
 		return model;
 	}
 }

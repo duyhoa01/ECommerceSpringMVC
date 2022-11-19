@@ -8,6 +8,8 @@ import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.tagext.SimpleTagSupport;
 
+import com.example.ecommerce.dao.productDetailDao;
+
 public class PaginationTaglib extends SimpleTagSupport {
 	private String uri;
 	private int offset;
@@ -19,7 +21,17 @@ public class PaginationTaglib extends SimpleTagSupport {
 	private String key="";
 	private List<Integer> manufacturer=new ArrayList<Integer>();
 	private List<Integer> pin=new ArrayList<Integer>();
+	private List<Integer> price=new ArrayList<Integer>();
 	
+	
+	public List<Integer> getPrice() {
+		return price;
+	}
+
+	public void setPrice(List<Integer> price) {
+		this.price = price;
+	}
+
 	public List<Integer> getPin() {
 		return pin;
 	}
@@ -151,16 +163,28 @@ public class PaginationTaglib extends SimpleTagSupport {
 		}
 		String keyString="";
 		String manufacturerString="";
+		String priceString="";
+		String pinString="";
 		keyString=(this.key!="" )? "&key="+key: "";
 		if(manufacturer.size()>0) {
 			for (Integer integer : manufacturer) {
 				manufacturerString+="&manufacturer="+integer;
 			}
 		}
+		if(price.size()>0) {
+			for (Integer integer : price) {
+				priceString+="&price="+integer;
+			}
+		}
+		if(pin.size()>0) {
+			for (Integer integer : pin) {
+				pinString+="&pin="+integer;
+			}
+		}
 		if(disabled)
 			link.append(">").append("<a href=\"#\">"+text+"</a></li>");
 		else
-			link.append(">").append("<a href=\""+uri+"?page="+page + keyString + manufacturerString + "\">"+text+"</a></li>");
+			link.append(">").append("<a href=\""+uri+"?page="+page + keyString + manufacturerString+priceString +pinString+ "\">"+text+"</a></li>");
 		return link.toString();
 	}
 }
